@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> D-Tour Website </title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-pzjw8f+ua7Kw1TIq0c5Tc6XbFfNmn02f4uBlToFjLk/04VptftR6d6mfQ49u+nbS" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+    <style>
+
+	.title {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 50px 0;
+    text-align: center;
+    color: white;
+}
+
+.title span {
+    color: #ff7f50;
+}
+
+/* Main container to hold the circle and team members */
+.container-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;  /* Adjusted to bring members closer */
+    margin-top: 30px;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+/* Leader's circle (default with team cover photo) */
+.leader-container {
+    position: relative;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.leader-container img {
+    width: 300px;  /* Smaller circle size */
+    height: 300px; /* Smaller circle size */
+    border-radius: 50%;
+    border: 5px solid orange;
+    transition: transform 0.3s ease;
+}
+
+.leader-container img:hover {
+    transform: scale(1.1);
+}
+
+/* Info container directly under the circle (hidden by default) */
+.info-container {
+    text-align: center;
+    margin-top: 10px;
+    position: absolute;
+    top: 300px;
+    width: 100%;
+    display: none; /* Hidden initially */
+}
+
+.info-container a {
+    color: #1877F2;
+    font-size: 30px;
+    text-decoration: none;
+}
+
+.info-container a:hover {
+    text-decoration: none;
+}
+
+/* Team Members container */
+.team-members-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;  /* Reduced the gap between team members */
+    margin-top: 30px;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center; /* Centering team members */
+    position: relative;
+    top: -60px;  /* Moved the team members higher */
+}
+
+/* Team member box */
+.team-member {
+    background: #fff;
+    padding: 15px;  /* Reduced padding */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;  /* Smaller width */
+    height: 200px; /* Smaller height */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    margin-bottom: 15px; /* Reduced space between boxes */
+    z-index: 1;
+}
+
+.team-member img {
+    width: 60px; /* Smaller image */
+    height: 60px; /* Smaller image */
+    border-radius: 50%;
+    margin-bottom: 10px; /* Adjusted spacing */
+    transition: transform 0.3s ease;
+}
+
+.team-member h4 {
+    font-size: 16px; /* Smaller font size */
+    margin: 0;
+    color: #333;
+    font-weight: 600;
+}
+
+.team-member p {
+    font-size: 12px; /* Smaller font size */
+    color: #666;
+    margin-top: 8px;
+}
+
+.team-member:hover {
+    transform: translateY(-8px); /* Slightly reduced hover effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.team-member img:hover {
+    transform: scale(1.1);
+}
+
+/* Ensure each member has enough space for hover and click */
+.team-member-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .team-members-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .team-member {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .container-center {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .info-container {
+        margin-top: 10px;
+        position: relative;
+        top: 0;
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: flex-start; /* Align to the top instead of center */
+    background: url('2.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+/* Hide the checkbox toggle */
+#toggleSidebar {
+    display: none; /* Hides the checkbox completely */
+}
+
+/* Sidebar styling */
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: -250px; /* Hide sidebar by default */
+    background: url('bg.jpeg');
+    overflow-x: hidden;
+    transition: left 0.5s;
+    padding-top: 60px; /* Space at the top */
+    z-index: 999; /* Ensure the sidebar is on top of other content */
+}
+
+/* Sidebar links */
+.sidebar a {
+    padding: 25px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+/* Sidebar link hover effect */
+.sidebar a:hover {
+    background-color: #007bff;
+}
+
+/* Toggle Sidebar when checkbox is checked */
+#toggleSidebar:checked ~ .sidebar {
+    left: 0; /* Slide sidebar into view */
+}
+
+/* Open button styling */
+.open-btn {
+    font-size: 20px;
+    cursor: pointer;
+    background: url('bg.jpeg');
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    position: fixed;
+    top: 15px;
+    left: 5px;
+    z-index: 1000; /* Ensure the button is above the sidebar */
+}
+
+/* Hide open button when sidebar is open */
+#toggleSidebar:checked ~ .open-btn {
+    display: none;
+}
+
+/* Close button styling within sidebar */
+.close-btn {
+    position: absolute;
+    top: 25px;
+    right: 155px;
+    font-size: 25px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+/* For screens smaller than 768px, ensure the sidebar is fixed and does not overlap content */
+@media (max-width: 768px) {
+    .sidebar {
+        left: -250px; /* Keep the sidebar size the same */
+        width: 250px; /* Sidebar width remains the same */
+    }
+
+    #toggleSidebar:checked ~ .sidebar {
+        left: 0; /* Slide sidebar into view */
+    }
+
+    /* Ensure content is not hidden behind sidebar when opened */
+    body {
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    .open-btn {
+        left: 10px; /* Adjust the button's position */
+        top: 20px; /* Adjust the button's position */
+    }
+
+    .container-center {
+        margin-left: 0; /* Adjust main content positioning on mobile */
+    }
+}
+
+
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="toggleSidebar">
+
+    <!-- Open button -->
+    <label for="toggleSidebar" class="open-btn">&#9776; Menu</label>
+
+    <!-- Sidebar with close button -->
+    <div class="sidebar">
+        <label for="toggleSidebar" class="close-btn">&#9776; Menu</label>
+        <a href="Home.html">Home</a>
+        <a href="About.html">About</a>
+        <a href="D-Tour.html">Explore</a>
+        <a href="Contact.html">Contact Us</a>
+    </div>
+<center>
+    <!-- Title section -->
+<div class="title">
+    MEET OUR <span>TEAM</span>
+</div>
+
+<!-- Centered content section -->
+<div class="container-center">
+    <!-- Team Members section (Left side and right side of circle) -->
+    <div class="team-members-container">
+        <!-- Left side members -->
+        <div class="left">
+            <!-- Team Member 1 -->
+            <div class="team-member-wrapper">
+                <div class="team-member" onclick="changeInfo('jc1.jpeg', 'Jhon Carlo Castro', '(+63) 951-814-4764', 'Carmen Municipality', 'https://www.facebook.com/profile.php?id=100072689824739')">
+                    <img src="jc.jpeg" alt="Gregory Fraser">
+                    <div><br>
+                        <h4>&emsp;Jhon Carlo Castro</h4>
+                        <p>CEO</p>
+			<p>Experienced digital marketer with a passion for sustainable tourism.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="team-member-wrapper">
+                <div class="team-member" onclick="changeInfo('ebs1.jpeg', 'Andrian A. Ebdani', '(+63) 951-814-4788', 'Panabo City', 'https://www.facebook.com/profile.php?id=100085445139396')">
+                    <img src="ebs.jpeg" alt="Darcey Lowery">
+                    <div>
+                        <h4>&emsp;Andrian A. Ebdani</h4>
+                        <p>COO/CTO</p>
+			<p>Technology expert with a background in tourism management. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leader's circle (initially team cover photo) -->
+        <div class="leader-container">
+            <img id="leader-img" src="logo.jpeg" alt="Team Cover Photo">
+        </div>
+
+        <!-- Right side members -->
+        <div class="right">
+            <!-- Team Member 3 -->
+            <div class="team-member-wrapper">
+                <div class="team-member" onclick="changeInfo('axl1.jpeg', 'Axl Kenji M. Garcia', '(+63) 951-388-2566', 'Panabo City', 'https://www.facebook.com/kenji.garcia.988')">
+                    <img src="axl.jpeg" alt="Reo Bender">
+                    <div>
+                        <h4>&emsp;Axl Kenji M. Garcia</h4>
+                        <p>CFO/CMO</p>
+			<p>Financially savvy, with expertise in marketing for growth and profitability.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="team-member-wrapper">
+                <div class="team-member" onclick="changeInfo('yan1.jpeg', 'Ryan Respecia', '(+63) 981-085-3132', 'Tagum City', 'https://www.facebook.com/ryan.respecia.984')">
+                    <img src="yan.jpeg" alt="Darcey Lowery">
+                    <div>
+                        <h4>&emsp;Ryan Respecia</h4>
+                        <p>CMO</p>
+			<p>Driving growth through strategic marketing, brand management, and customer engagement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Information directly under the circle (will change based on selected member) -->
+    <div class="info-container" id="info-container">
+        <p><strong id="info-name">Click on a member</strong></p>
+        <p id="info-phone">Phone: N/A</p>
+        <p id="info-address">Address: N/A</p>
+        <a href="https://www.facebook.com/bluu.solution.s.2024" target="_blank" id="info-fb">
+            <i class="fab fa-facebook-square"></i> <!-- Facebook Icon -->
+        </a>
+    </div>
+</div>
+
+<script>
+    // Variable to track the current selected member
+    let currentMember = null;
+
+    // Function to change the image and info or reset to the default
+    function changeInfo(imageSrc, name, phone, address, fbLink) {
+        const leaderImg = document.getElementById('leader-img');
+        const infoContainer = document.getElementById('info-container');
+
+        // Check if the clicked member is the same as the current one
+        if (currentMember === name) {
+            // Reset to default team cover if the same member is clicked again
+            leaderImg.src = 'logo.jpeg';
+            document.getElementById('info-name').textContent = 'Bluu Solutions D-Tour';
+            document.getElementById('info-phone').textContent = 'Innovation with Purpose 🌍🚀';
+            document.getElementById('info-address').textContent = '';
+            document.getElementById('info-fb').href = 'https://www.facebook.com/bluu.solution.s.2024';
+            document.getElementById('info-fb').style.display = 'inline'; // Ensure it's visible
+
+            // Reset current member to null
+            currentMember = null;
+        } else {
+            // Update the image and information
+            leaderImg.src = imageSrc;
+            document.getElementById('info-name').textContent = name;
+            document.getElementById('info-phone').textContent = ' ' + phone;
+            document.getElementById('info-address').textContent = ' ' + address;
+            document.getElementById('info-fb').href = fbLink;
+            document.getElementById('info-fb').style.display = 'inline'; // Ensure it's visible
+
+            // Set the current member to the clicked one
+            currentMember = name;
+        }
+
+        // Ensure the info container is displayed
+        infoContainer.style.display = 'block';
+    }
+
+    // Automatically load the team cover photo and its info on page load
+    window.onload = function() {
+        changeInfo(
+            'logo.jpeg', 
+            'Bluu Solutions D-Tour', 
+            'Innovation with Purpose 🌍🚀', 
+            '', 
+            'https://www.facebook.com/bluu.solution.s.2024' // Link to the team Facebook page
+        );
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    
+</body>
+</html>
